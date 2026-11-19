@@ -1,0 +1,6 @@
+@Laqeeta.API_HostAddress = http://localhost:5208
+
+GET {{Laqeeta.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
