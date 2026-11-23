@@ -1,0 +1,81 @@
+@model ClaimResultViewModel
+@{
+    ViewData["Title"] = "طلب الاستلام";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        @if (Model.Error is not null)
+        {
+            <div class="alert alert-danger">
+                <strong>مقدرناش ننفذ الطلب.</strong>
+                <div class="mt-1">@Model.Error</div>
+            </div>
+
+            <a class="btn btn-outline-secondary" asp-controller="Track" asp-action="Index">الرجوع لمتابعة البلاغ</a>
+        }
+        else if (Model.Claim is not null)
+        {
+            var claim = Model.Claim;
+            var badge = UiHelper.ClaimStatus(claim.Status);
+
+            <div class="card page-card text-center">
+                <div class="card-body p-5">
+                    @if (Model.JustCreated)
+                    {
+                        <div class="success-mark mb-3">✔</div>
+                        <h1 class="h3 fw-bold mb-2">تم إرسال طلب الاستلام</h1>
+                        <p class="text-muted">احتفظ برقم الطلب، وروح المحطة ببطاقتك الشخصية عشان الموظف يتأكد منك.</p>
+                    }
+                    else
+                    {
+                        <h1 class="h3 fw-bold mb-3">حالة طلب الاستلام</h1>
+                    }
+
+                    <div class="text-muted small">رقم الطلب</div>
+                    <div class="big-number mb-3">@claim.ClaimId</div>
+
+                    <span class="badge fs-6 @badge.Css">@badge.Text</span>
+
+                    <ul class="list-unstyled text-muted small mt-4 mb-4">
+                        <li>رقم البلاغ: @claim.ReportId</li>
+                        <li>رقم الغرض: @claim.ItemId</li>
+                        @if (claim.HandedOverAt.HasValue)
+                        {
+                            <li>اتسلّم في: @UiHelper.EgyptTime(claim.HandedOverAt)</li>
+                        }
+                    </ul>
+
+                    @switch (claim.Status)
+                    {
+                        case "Pending":
+                            <div class="alert alert-warning small mb-0">
+                                الطلب لسه في انتظار موظف المحطة يتأكد إنك صاحب الغرض.
+                            </div>
+                            break;
+                        case "Approved":
+                            <div class="alert alert-success small mb-0">
+                                تمت الموافقة. روح المحطة وهتستلم الغرض.
+                            </div>
+                            break;
+                        case "Rejected":
+                            <div class="alert alert-danger small mb-0">
+                                الطلب اترفض. لو شايف إن ده غلط كلّم موظف المحطة.
+                            </div>
+                            break;
+                        case "Completed":
+                            <div class="alert alert-dark small mb-0">
+                                الغرض اتسلّم لصاحبه. الحمد لله على السلامة!
+                            </div>
+                            break;
+                    }
+                </div>
+            </div>
+
+            <div class="mt-3 d-flex gap-2 justify-content-center">
+                <a class="btn btn-outline-secondary" asp-action="Status">استعلام تاني</a>
+                <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">الرئيسية</a>
+            </div>
+        }
+    </div>
+</div>

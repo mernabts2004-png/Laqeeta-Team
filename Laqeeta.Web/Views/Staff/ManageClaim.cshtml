@@ -1,0 +1,111 @@
+@model StaffClaimViewModel?
+@{
+    ViewData["Title"] = "معالجة طلب استلام";
+}
+
+@if (Model is null)
+{
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-5">
+            <div class="card page-card">
+                <div class="card-body p-4">
+                    <h1 class="h4 fw-bold mb-1">معالجة طلب استلام</h1>
+                    <p class="text-muted small mb-4">اكتب رقم الطلب اللي الراكب قاله لك.</p>
+
+                    <form asp-action="ManageClaim" method="get">
+                        <div class="mb-4">
+                            <label for="id" class="form-label">رقم طلب الاستلام</label>
+                            <input id="id" name="id" type="number" min="1" class="form-control" dir="ltr" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">فتح الطلب</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <h1 class="h3 fw-bold mb-0">طلب استلام رقم <span class="text-metro">#@Model.ClaimId</span></h1>
+        <a class="btn btn-outline-secondary btn-sm" asp-action="ManageClaim">طلب تاني</a>
+    </div>
+
+    <p class="text-muted">
+        الخطوات بالترتيب: <strong>1) التحقق</strong> ← <strong>2) الموافقة</strong> ← <strong>3) التسليم</strong>.
+        (أو الرفض لو الطلب لسه في الانتظار).
+    </p>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card page-card h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold">1) التحقق من المالك</h2>
+
+                    @if (Model.SecretQuestion is not null)
+                    {
+                        <div class="alert alert-info">
+                            <div class="small text-muted">السؤال السري اللي الراكب كتبه:</div>
+                            <div class="fw-bold">@Model.SecretQuestion</div>
+                        </div>
+                    }
+                    else if (Model.Note is not null)
+                    {
+                        <div class="alert alert-secondary small">@Model.Note</div>
+                    }
+
+                    <form asp-action="Verify" asp-route-id="@Model.ClaimId" method="post">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" name="idVerified" value="true" id="idVerified" />
+                            <label class="form-check-label" for="idVerified">
+                                اتأكدت من البطاقة الشخصية للراكب
+                            </label>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="secretAnswer">إجابة السؤال السري</label>
+                            <input class="form-control" type="text" name="secretAnswer" id="secretAnswer"
+                                   autocomplete="off" maxlength="200" />
+                            <div class="form-text">مطلوبة للحاجات الغالية (موبايل / محفظة / بطاقة). مش حساسة لحروف كبيرة أو صغيرة.</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">تحقق</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card page-card mb-4">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold">2) القرار</h2>
+                    <p class="small text-muted">الموافقة بتحجز الغرض وبتخلي البلاغ «جاهز للاستلام».</p>
+
+                    <div class="d-flex gap-2">
+                        <form asp-action="Approve" asp-route-id="@Model.ClaimId" method="post" class="flex-fill">
+                            <button type="submit" class="btn btn-success w-100">موافقة</button>
+                        </form>
+
+                        <form asp-action="Reject" asp-route-id="@Model.ClaimId" method="post" class="flex-fill"
+                              onsubmit="return confirm('متأكد إنك عاوز ترفض الطلب ده؟');">
+                            <button type="submit" class="btn btn-outline-danger w-100">رفض</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card page-card">
+                <div class="card-body p-4">
+                    <h2 class="h5 fw-bold">3) التسليم</h2>
+                    <p class="small text-muted">بعد ما تسلّم الغرض للراكب فعلاً، اضغط هنا عشان الطلب يخلص والبلاغ يتقفل.</p>
+
+                    <form asp-action="Handover" asp-route-id="@Model.ClaimId" method="post"
+                          onsubmit="return confirm('هل سلّمت الغرض للراكب فعلاً؟ العملية دي مش بترجع.');">
+                        <button type="submit" class="btn btn-dark w-100">تم تسليم الغرض</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

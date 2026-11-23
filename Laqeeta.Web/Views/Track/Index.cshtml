@@ -1,0 +1,34 @@
+@model TrackRequestViewModel
+@{
+    ViewData["Title"] = "تابع بلاغك";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-5">
+        <div class="card page-card">
+            <div class="card-body p-4">
+                <h1 class="h4 fw-bold mb-1">تابع بلاغك</h1>
+                <p class="text-muted small mb-4">اكتب رقم البلاغ ورقم الموبايل اللي سجّلت بيه.</p>
+
+                <form asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="ReportId" class="form-label"></label>
+                        <input asp-for="ReportId" type="number" min="1" class="form-control" dir="ltr"
+                               value="@(Model.ReportId > 0 ? Model.ReportId.ToString() : "")" />
+                        <span asp-validation-for="ReportId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" dir="ltr" inputmode="tel" maxlength="20" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">دوّر</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

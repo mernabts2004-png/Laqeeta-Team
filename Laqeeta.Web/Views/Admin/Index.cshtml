@@ -1,0 +1,83 @@
+@model List<StationReportResponse>
+@{
+    ViewData["Title"] = "تقرير المحطات";
+
+    var totalFound = Model.Sum(s => s.FoundItemsCount);
+    var totalReturned = Model.Sum(s => s.ReturnedItemsCount);
+    var overallRate = totalFound == 0 ? 0m : Math.Round((decimal)totalReturned * 100 / totalFound, 1);
+}
+
+<h1 class="h3 fw-bold mb-1">تقرير المحطات</h1>
+<p class="text-muted mb-4">عدد الأغراض اللي اتلقت في كل محطة، وكام منها رجع لصاحبه.</p>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="text-muted small">إجمالي الأغراض اللي اتلقت</div>
+                <div class="stat-number">@totalFound</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="text-muted small">اللي رجع لأصحابه</div>
+                <div class="stat-number">@totalReturned</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="text-muted small">نسبة الإرجاع الإجمالية</div>
+                <div class="stat-number">@overallRate.ToString("0.#")%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card page-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>المحطة</th>
+                    <th class="text-center">أغراض اتلقت</th>
+                    <th class="text-center">أغراض رجعت</th>
+                    <th style="min-width: 200px;">نسبة الإرجاع</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">مفيش بيانات.</td>
+                    </tr>
+                }
+
+                @foreach (var station in Model.OrderBy(s => s.StationName))
+                {
+                    var rate = Math.Round(station.ReturnRate, 1);
+
+                    <tr>
+                        <td>@station.StationId</td>
+                        <td class="fw-bold">@station.StationName</td>
+                        <td class="text-center">@station.FoundItemsCount</td>
+                        <td class="text-center">@station.ReturnedItemsCount</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="progress flex-grow-1" role="progressbar" aria-valuenow="@rate"
+                                     aria-valuemin="0" aria-valuemax="100" style="height: 10px;">
+                                    <div class="progress-bar bg-metro" style="width: @(rate.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                                </div>
+                                <span class="small fw-bold">@rate.ToString("0.#")%</span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

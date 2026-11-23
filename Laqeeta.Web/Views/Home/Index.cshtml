@@ -1,0 +1,95 @@
+@{
+    ViewData["Title"] = "الرئيسية";
+}
+
+<section class="hero text-white rounded-4 p-4 p-lg-5 mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <h1 class="display-5 fw-bold mb-3">ضاعت منك حاجة في المترو؟</h1>
+            <p class="lead mb-4">
+                بلّغ عنها في دقيقة، وإحنا هندوّر في الأغراض اللي موظفين المحطات لقوها،
+                ولو لقينا حاجة تشبه اللي ضاع منك هتقدر تطلب تستلمها.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-warning btn-lg fw-bold" asp-controller="LostReports" asp-action="Create">بلّغ عن حاجة ضاعت</a>
+                <a class="btn btn-outline-light btn-lg" asp-controller="Track" asp-action="Index">تابع بلاغك</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<h2 class="h4 fw-bold mb-3">إزاي بيشتغل النظام؟</h2>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-6 col-lg-3">
+        <div class="card step-card h-100">
+            <div class="card-body">
+                <div class="step-number">1</div>
+                <h3 class="h6 fw-bold">بلّغ عن الحاجة</h3>
+                <p class="text-muted small mb-0">
+                    اكتب نوعها ولونها والخط والاتجاه ووقت ما ضاعت. هتاخد <strong>رقم بلاغ</strong> احتفظ بيه.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card step-card h-100">
+            <div class="card-body">
+                <div class="step-number">2</div>
+                <h3 class="h6 fw-bold">النظام يدوّر</h3>
+                <p class="text-muted small mb-0">
+                    بنطابق بلاغك مع الأغراض اللي اتلقت على نفس الخط والاتجاه في حدود 3 أيام قبل وبعد.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card step-card h-100">
+            <div class="card-body">
+                <div class="step-number">3</div>
+                <h3 class="h6 fw-bold">اطلب الاستلام</h3>
+                <p class="text-muted small mb-0">
+                    لو لقيت حاجتك في النتايج اضغط «اطلب استلام» وهتاخد <strong>رقم طلب</strong>.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card step-card h-100">
+            <div class="card-body">
+                <div class="step-number">4</div>
+                <h3 class="h6 fw-bold">استلمها من المحطة</h3>
+                <p class="text-muted small mb-0">
+                    روح المحطة ببطاقتك الشخصية. الموظف هيتأكد إنك صاحبها (وبالسؤال السري لو الحاجة غالية).
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <a class="card quick-card h-100 text-decoration-none" asp-controller="LostReports" asp-action="Create">
+            <div class="card-body">
+                <h3 class="h5 fw-bold">بلاغ فقدان جديد</h3>
+                <p class="text-muted mb-0">سجّل حاجة ضاعت منك.</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="card quick-card h-100 text-decoration-none" asp-controller="Track" asp-action="Index">
+            <div class="card-body">
+                <h3 class="h5 fw-bold">تابع بلاغك</h3>
+                <p class="text-muted mb-0">شوف حالة البلاغ والأغراض المتطابقة.</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="card quick-card h-100 text-decoration-none" asp-controller="Claims" asp-action="Status">
+            <div class="card-body">
+                <h3 class="h5 fw-bold">حالة طلب الاستلام</h3>
+                <p class="text-muted mb-0">اعرف طلبك اتوافق عليه ولا لسه.</p>
+            </div>
+        </a>
+    </div>
+</div>

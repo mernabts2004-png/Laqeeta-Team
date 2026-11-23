@@ -1,0 +1,25 @@
+@model int
+@{
+    ViewData["Title"] = "تم إرسال البلاغ";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card page-card text-center">
+            <div class="card-body p-5">
+                <div class="success-mark mb-3">✔</div>
+                <h1 class="h3 fw-bold mb-2">تم تسجيل بلاغك</h1>
+                <p class="text-muted">احتفظ برقم البلاغ، هتحتاجه مع رقم موبايلك لمتابعة البلاغ.</p>
+
+                <div class="big-number my-4">@Model</div>
+
+                <div class="d-grid gap-2">
+                    <a class="btn btn-primary" asp-controller="Track" asp-action="Index" asp-route-reportId="@Model">
+                        دوّر على حاجتي دلوقتي
+                    </a>
+                    <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">الرجوع للرئيسية</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

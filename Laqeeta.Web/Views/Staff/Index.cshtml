@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "لوحة الموظف";
+}
+
+<h1 class="h3 fw-bold mb-1">لوحة الموظف</h1>
+<p class="text-muted mb-4">أهلاً @User.Identity?.Name، اختار العملية اللي عاوز تعملها.</p>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <a class="card quick-card h-100 text-decoration-none" asp-action="FoundItem">
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold">تسجيل غرض اتلقى</h2>
+                <p class="text-muted mb-0">سجّل أي حاجة لقيتها في المحطة أو في القطر عشان النظام يطابقها مع بلاغات الركاب.</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6">
+        <a class="card quick-card h-100 text-decoration-none" asp-action="ManageClaim">
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold">معالجة طلب استلام</h2>
+                <p class="text-muted mb-0">اتحقق من هوية الراكب، وافق أو ارفض الطلب، وسلّم الغرض لصاحبه.</p>
+            </div>
+        </a>
+    </div>
+</div>

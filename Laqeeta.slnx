@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="Laqeeta.API/Laqeeta.API.csproj" />
+  <Project Path="Laqeeta.Web/Laqeeta.Web.csproj" />
 </Solution>
