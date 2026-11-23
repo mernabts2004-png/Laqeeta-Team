@@ -1,0 +1,56 @@
+@model CreateReportViewModel
+@{
+    ViewData["Title"] = "بلاغ فقدان جديد";
+    ViewData["TimeLabel"] = "وقت ما ضاعت الحاجة (تقريباً)";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card page-card">
+            <div class="card-body p-4">
+                <h1 class="h3 fw-bold mb-1">بلاغ فقدان جديد</h1>
+                <p class="text-muted mb-4">املا البيانات بدقة عشان النظام يقدر يطابق بلاغك مع الأغراض اللي اتلقت.</p>
+
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" dir="ltr" inputmode="tel"
+                               placeholder="01000000000" maxlength="20" />
+                        <div class="form-text">هتحتاج الرقم ده مع رقم البلاغ عشان تتابعه.</div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                    </div>
+
+                    <partial name="_ItemFields" model="Model" />
+
+                    <div id="secretBox" class="secret-box mt-4 d-none">
+                        <h2 class="h6 fw-bold">سؤال سري (للحاجات الغالية)</h2>
+                        <p class="small text-muted">
+                            عشان نحمي حاجتك، اكتب سؤال وإجابة ميعرفهمش غيرك (زي: إيه صورة خلفية الموبايل؟).
+                            الموظف هيسألك السؤال وقت الاستلام. الإجابة بتتخزن مشفّرة.
+                        </p>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="SecretQuestion" class="form-label"></label>
+                                <input asp-for="SecretQuestion" class="form-control" maxlength="200" />
+                                <span asp-validation-for="SecretQuestion" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SecretAnswer" class="form-label"></label>
+                                <input asp-for="SecretAnswer" class="form-control" maxlength="200" autocomplete="off" />
+                                <span asp-validation-for="SecretAnswer" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">إرسال البلاغ</button>
+                        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">إلغاء</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

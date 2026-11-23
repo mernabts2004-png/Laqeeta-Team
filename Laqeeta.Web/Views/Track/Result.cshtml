@@ -1,0 +1,95 @@
+@model TrackResultViewModel
+@{
+    ViewData["Title"] = "بلاغ رقم " + Model.ReportId;
+    var badge = UiHelper.ReportStatus(Model.Status);
+}
+
+<div class="card page-card mb-4">
+    <div class="card-body p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+                <h1 class="h4 fw-bold mb-1">بلاغ رقم <span class="text-metro">#@Model.ReportId</span></h1>
+                <div class="text-muted small">اتسجّل في @UiHelper.EgyptTime(Model.CreatedAt)</div>
+            </div>
+            <span class="badge fs-6 @badge.Css">@badge.Text</span>
+        </div>
+    </div>
+</div>
+
+@if (Model.Status == "Closed")
+{
+    <div class="alert alert-dark">
+        الغرض اتسلّم لصاحبه والبلاغ اتقفل. الحمد لله على السلامة!
+    </div>
+}
+else if (Model.Status == "ReadyToCollect")
+{
+    <div class="alert alert-success">
+        <strong>طلب الاستلام بتاعك اتوافق عليه.</strong>
+        روح المحطة ببطاقتك الشخصية عشان تستلم الغرض.
+        <a class="alert-link" asp-controller="Claims" asp-action="Status">شوف حالة طلب الاستلام</a>
+    </div>
+}
+else if (Model.MatchesError is not null)
+{
+    <div class="alert alert-warning">@Model.MatchesError</div>
+}
+else if (Model.Matches.Count == 0)
+{
+    <div class="card page-card">
+        <div class="card-body p-4 text-center text-muted">
+            <p class="fs-5 mb-1">لسه مفيش أغراض متطابقة.</p>
+            <p class="small mb-0">
+                ممكن الموظفين لسه ملقوش الغرض. ارجع وجرّب تاني بعد شوية، والبلاغ فاضل مفتوح.
+            </p>
+        </div>
+    </div>
+}
+else
+{
+    <h2 class="h5 fw-bold mb-3">
+        أغراض ممكن تكون بتاعتك
+        <span class="badge text-bg-warning">@Model.Matches.Count</span>
+    </h2>
+
+    <p class="text-muted small">
+        دي أغراض لقاها موظفين المحطات وبتشبه بلاغك. لو واحد منهم بتاعك اضغط «ده بتاعي» وهنبعت طلب استلام.
+    </p>
+
+    <div class="row g-3">
+        @foreach (var item in Model.Matches)
+        {
+            <div class="col-md-6">
+                <div class="card match-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h3 class="h6 fw-bold mb-0">@LookupData.CategoryLabel(item.Category)</h3>
+                            <span class="badge text-bg-light border">غرض #@item.ItemId</span>
+                        </div>
+
+                        <p class="mb-3">@item.Description</p>
+
+                        <ul class="list-unstyled small text-muted mb-3">
+                            <li><strong>اللون:</strong> @LookupData.ColorLabel(item.Color)</li>
+                            <li><strong>الخط:</strong> @LookupData.LineLabel(item.Line) — @LookupData.DirectionLabel(item.Direction)</li>
+                            <li><strong>اتلقى:</strong> @UiHelper.EgyptTime(item.FoundAt)</li>
+                            <li><strong>المحطة:</strong> @item.StationName</li>
+                        </ul>
+
+                        <form asp-controller="Claims" asp-action="Create" method="post"
+                              onsubmit="return confirm('هتبعت طلب استلام للغرض ده. متأكد إنه بتاعك؟');">
+                            <input type="hidden" name="reportId" value="@Model.ReportId" />
+                            <input type="hidden" name="itemId" value="@item.ItemId" />
+                            <input type="hidden" name="phoneNumber" value="@Model.PhoneNumber" />
+                            <button type="submit" class="btn btn-primary w-100">ده بتاعي — اطلب استلام</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div class="mt-4">
+    <a class="btn btn-outline-secondary" asp-action="Index">بلاغ تاني</a>
+</div>

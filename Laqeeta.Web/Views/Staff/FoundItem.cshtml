@@ -1,0 +1,42 @@
+@model FoundItemViewModel
+@using Microsoft.Extensions.Options
+@using Laqeeta.Web.Configuration
+@inject IOptions<LaqeetaOptions> Options
+@{
+    ViewData["Title"] = "تسجيل غرض اتلقى";
+    ViewData["TimeLabel"] = "وقت ما اتلقى الغرض";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card page-card">
+            <div class="card-body p-4">
+                <h1 class="h3 fw-bold mb-1">تسجيل غرض اتلقى</h1>
+                <p class="text-muted mb-4">سجّل بيانات الغرض بدقة، لأن المطابقة مع بلاغات الركاب بتعتمد عليها.</p>
+
+                <form asp-action="FoundItem" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="StationId" class="form-label"></label>
+                        <select asp-for="StationId" class="form-select">
+                            <option value="">اختار المحطة...</option>
+                            @foreach (var station in Options.Value.Stations)
+                            {
+                                <option value="@station.Id">@station.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="StationId" class="text-danger small"></span>
+                    </div>
+
+                    <partial name="_ItemFields" model="Model" />
+
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">تسجيل الغرض</button>
+                        <a class="btn btn-outline-secondary" asp-action="Index">رجوع</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

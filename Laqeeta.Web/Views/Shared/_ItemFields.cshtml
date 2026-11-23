@@ -1,0 +1,70 @@
+@model ItemFormBase
+@{
+    var timeLabel = ViewData["TimeLabel"] as string ?? "الوقت";
+    var maxTime = UiHelper.DateTimeLocalValue(UiHelper.EgyptNow());
+}
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" class="form-select" id="Category">
+            <option value="">اختار نوع الحاجة...</option>
+            @foreach (var item in LookupData.Categories)
+            {
+                <option value="@item.Value" data-high="@(item.HighValue ? "1" : "0")">@item.Label</option>
+            }
+        </select>
+        <span asp-validation-for="Category" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Color" class="form-label"></label>
+        <select asp-for="Color" class="form-select">
+            <option value="">اختار اللون...</option>
+            @foreach (var item in LookupData.Colors)
+            {
+                <option value="@item.Value">@item.Label</option>
+            }
+        </select>
+        <span asp-validation-for="Color" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Line" class="form-label"></label>
+        <select asp-for="Line" class="form-select">
+            <option value="">اختار الخط...</option>
+            @foreach (var item in LookupData.Lines)
+            {
+                <option value="@item.Value">@item.Label</option>
+            }
+        </select>
+        <span asp-validation-for="Line" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Direction" class="form-label"></label>
+        <select asp-for="Direction" class="form-select">
+            <option value="">اختار الاتجاه...</option>
+            @foreach (var item in LookupData.Directions)
+            {
+                <option value="@item.Value">@item.Label</option>
+            }
+        </select>
+        <span asp-validation-for="Direction" class="text-danger small"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="EventAt" class="form-label">@timeLabel</label>
+        <input asp-for="EventAt" type="datetime-local" class="form-control" max="@maxTime"
+               value="@UiHelper.DateTimeLocalValue(Model.EventAt)" />
+        <div class="form-text">بتوقيت مصر.</div>
+        <span asp-validation-for="EventAt" class="text-danger small"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3" maxlength="500"
+                  placeholder="مثال: موبايل أسود بشاشة مكسورة وجراب أزرق"></textarea>
+        <span asp-validation-for="Description" class="text-danger small"></span>
+    </div>
+</div>
